@@ -397,6 +397,7 @@ mark { background: rgba(249,226,175,.3); color: var(--attr); border-radius: 2px;
   <div class="sidebar-label" style="margin-top:8px">Reference</div>
   <div class="sidebar-section">
     <div class="nav-item" onclick="show('quickref')" id="nav-quickref"><span class="nav-icon">📋</span>Quick Ref</div>
+    <div class="nav-item" onclick="show('viva')" id="nav-viva"><span class="nav-icon">🎓</span>Viva Questions</div>
   </div>
 </aside>
 
@@ -961,7 +962,7 @@ document.cookie = <span class="str">"username="</span> + user
     <div><h1>Bootstrap 5</h1><p>Responsive grid, components, utilities — mobile-first.</p></div>
   </div>
 
-  <div class="callout tip"><span>💡</span><span>Add Bootstrap via CDN (Ensure files are stored in CSS/JS folder)</span></div>
+  <div class="callout tip"><span>💡</span><span>Add Bootstrap via CDN (Ensure files are in the right folder)</span></div>
   <div class="card" style="margin-bottom:16px">
     <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;CDN links</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre><span class="cm">&lt;!-- CSS in &lt;head&gt; --&gt;</span>
@@ -1108,25 +1109,25 @@ document.cookie = <span class="str">"username="</span> + user
   <h2 class="sh">Database CRUD (mysqli)</h2>
   <div class="card">
     <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;dbcon.php + CRUD</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cm">// Connect syntax: $conn= new mysqli('$servername', "$username', '$password', '$dbname');</span>
+    <pre><span class="cm">// Connect Syntax:$conn = new mysqli('$servername', '$username', '$password' , '$dbname')</span>
 <span class="kw">$conn</span> = <span class="kw">new</span> <span class="fn">mysqli</span>(<span class="str">'localhost'</span>, <span class="str">'root'</span>, <span class="str">'student'</span>, <span class="str">'college_mgt_system'</span>);
 <span class="kw">if</span> (<span class="kw">$conn</span>->connect_error) <span class="fn">die</span>(<span class="str">'Failed: '</span> . <span class="kw">$conn</span>->connect_error);
 
-<span class="cm">// INSERT</span>
+<span class="cm">// INSERT Syntax: $sql = "INSERT INTO table_name(column_names) VALUES ('$values')"</span>
 <span class="kw">$sql</span> = <span class="str">"INSERT INTO user(username, password) VALUES('$user','$pass')"</span>;
 <span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);
 
-<span class="cm">// SELECT + display</span>
+<span class="cm">// SELECT + display Syntax: "SELECT * from table_name"</span>
 <span class="kw">$result</span> = <span class="kw">$conn</span>-><span class="fn">query</span>(<span class="str">"SELECT * FROM student"</span>);
 <span class="kw">while</span> (<span class="kw">$row</span> = <span class="kw">$result</span>-><span class="fn">fetch_assoc</span>()) {
   <span class="kw">echo</span> <span class="kw">$row</span>[<span class="str">'Name'</span>] . <span class="str">'&lt;br&gt;'</span>;
 }
 
-<span class="cm">// UPDATE</span>
+<span class="cm">// UPDATE Syntax: "Update table_name SET column='value' where condition"</span>
 <span class="kw">$sql</span> = <span class="str">"UPDATE student SET Class='$class', Address='$addr' WHERE Rollno=$rollno"</span>;
 <span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);
 
-<span class="cm">// DELETE</span>
+<span class="cm">// DELETE Syntax: "Delete from table_name where condition"</span>
 <span class="kw">$sql</span> = <span class="str">"DELETE FROM student WHERE Rollno=$rollno"</span>;
 <span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);</pre>
   </div>
@@ -1171,7 +1172,7 @@ document.cookie = <span class="str">"username="</span> + user
     <div><h1>XML &amp; JSON</h1><p>Structured data formats — XML for markup, JSON for JS objects.</p></div>
   </div>
 
-  <h2 class="sh">XML Structure</h2>
+  <h2 class="sh">XML Structure (Make use of XMLBlueprint)</h2>
   <div class="card">
     <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;bookstore.xml</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre><span class="tg">&lt;?xml</span> <span class="at">version</span>=<span class="str">"1.0"</span> <span class="at">encoding</span>=<span class="str">"UTF-8"</span><span class="tg">?&gt;</span>
@@ -1433,6 +1434,498 @@ Route::<span class="fn">post</span>(<span class="str">'updateform/{id}'</span>, 
 </tbody></table></pre>
   </div>
 </div>
+
+<!-- ════ VIVA QUESTIONS ════ -->
+<div class="section" id="viva">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(203,166,247,.15)">🎓</div>
+    <div><h1>Viva Questions</h1><p>Theory-based questions &amp; answers from every topic — exam ready.</p></div>
+  </div>
+
+  <!-- ── HTML ── -->
+  <h2 class="sh">HTML</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is HTML? What does DOCTYPE do?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">HTML</span> (HyperText Markup Language) is the standard language for creating web pages. It uses <span class="kw">tags</span> (elements) to structure content.
+
+<span class="str">&lt;!DOCTYPE html&gt;</span> tells the browser which version of HTML is being used. In HTML5 it is simply <span class="kw">&lt;!DOCTYPE html&gt;</span> — without it, the browser enters "quirks mode" and may render the page incorrectly.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;Difference between GET and POST methods?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">GET:</span> Data sent in the URL query string. Visible to user. Bookmarkable. Limited data size. Used for retrieving data.
+  → <span class="kw">?Name=John&amp;Email=john@x.com</span>
+
+<span class="str">POST:</span> Data sent in the HTTP body. Not visible in URL. No size limit. Used for sending/saving data (forms, logins, file uploads).</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is colspan and rowspan?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">colspan</span>: Merges a cell across multiple <span class="kw">columns</span> horizontally.
+  → <span class="kw">&lt;th colspan="3"&gt;</span> spans 3 columns wide.
+
+<span class="str">rowspan</span>: Merges a cell across multiple <span class="kw">rows</span> vertically.
+  → <span class="kw">&lt;td rowspan="2"&gt;</span> spans 2 rows tall.
+
+Both are used to create complex table layouts like timetables.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What are meta tags? Name a few.</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">Meta tags provide <span class="str">metadata</span> about the HTML document. They go inside <span class="kw">&lt;head&gt;</span> and are not displayed.
+
+<span class="kw">charset</span>  — character encoding (UTF-8)
+<span class="kw">viewport</span> — responsive scaling on mobile
+<span class="kw">description</span> — page summary for SEO
+<span class="kw">keywords</span> — search engine keywords
+<span class="kw">author</span>   — page author</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is the hidden input type used for?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">type="hidden"</span> sends data with a form that the <span class="kw">user cannot see or change</span> in the browser UI.
+
+Common uses: passing IDs, CSRF tokens, record identifiers between pages.
+
+Example from journal:
+<span class="kw">&lt;input type="hidden" name="secret" value="iambatman"&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;Difference between &lt;th&gt; and &lt;td&gt;?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">&lt;th&gt;</span> — Table Header cell. Displayed <span class="kw">bold and centered</span> by default. Used for column/row headings.
+
+<span class="str">&lt;td&gt;</span> — Table Data cell. Normal weight. Used for actual data content.
+
+Both sit inside <span class="kw">&lt;tr&gt;</span> (table row).</pre>
+    </div>
+  </div>
+
+  <!-- ── CSS ── -->
+  <h2 class="sh">CSS</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is CSS? What are the 3 ways to apply CSS?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">CSS</span> (Cascading Style Sheets) controls the visual presentation of HTML elements.
+
+<span class="kw">1. Inline</span>  — style attribute on the element itself
+<span class="kw">2. Internal</span> — &lt;style&gt; block inside &lt;head&gt;
+<span class="kw">3. External</span> — separate .css file linked via &lt;link&gt;
+
+External CSS is preferred (reusable, maintainable).</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is a CSS selector? Name types.</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">A <span class="str">selector</span> targets which HTML elements a style rule applies to.
+
+<span class="kw">Element</span>  → h1 { }        targets all &lt;h1&gt;
+<span class="kw">Class</span>    → .box { }     targets class="box"
+<span class="kw">ID</span>       → #header { }  targets id="header"
+<span class="kw">Pseudo</span>   → a:hover { }  targets on hover
+<span class="kw">Universal</span>→ * { }        targets everything</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is Flexbox? Key properties?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Flexbox</span> is a CSS layout model for arranging items in a row or column with flexible sizing.
+
+<span class="kw">display: flex</span>         — enables flex container
+<span class="kw">flex-direction</span>        — row / column
+<span class="kw">justify-content</span>       — align on main axis (center, space-between…)
+<span class="kw">align-items</span>           — align on cross axis
+<span class="kw">flex-wrap</span>             — allow wrapping to next line</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What does @media print do?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">@media print</span> is a CSS media query that applies styles <span class="kw">only when the page is printed</span>.
+
+Used in the certificate page to hide the print button:
+<span class="kw">@media print { .print-btn { display: none; } }</span>
+
+This keeps the button visible on screen but removes it from the printed output.</pre>
+    </div>
+  </div>
+
+  <!-- ── JavaScript ── -->
+  <h2 class="sh">JavaScript</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is JavaScript? Where can scripts be placed?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">JavaScript</span> is a client-side scripting language that makes web pages interactive — it runs in the browser.
+
+<span class="kw">Internal</span>  — &lt;script&gt; inside &lt;head&gt; or &lt;body&gt;
+<span class="kw">External</span>  — separate .js file via &lt;script src="..."&gt;
+<span class="kw">Inline</span>    — directly in event attributes (onclick="...")
+
+Best practice: external file loaded before &lt;/body&gt;.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What are the 3 types of functions in JS?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">1. Named function</span>
+   <span class="kw">function add(a,b) { return a+b; }</span>
+   Hoisted — can be called before definition.
+
+<span class="str">2. Anonymous function</span>
+   <span class="kw">let add = function(a,b) { return a+b; };</span>
+   Assigned to a variable, not hoisted.
+
+<span class="str">3. Arrow function</span>
+   <span class="kw">let add = (a,b) => a+b;</span>
+   Concise syntax, no own 'this' binding.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;Difference between innerHTML and innerText?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">innerHTML</span> — Gets/sets content including <span class="kw">HTML tags</span>.
+  el.innerHTML = "&lt;h2&gt;Hello&lt;/h2&gt;"; // renders as heading
+
+<span class="str">innerText</span> — Gets/sets content as <span class="kw">plain text only</span>.
+  el.innerText = "&lt;h2&gt;Hello&lt;/h2&gt;"; // shows literally as text
+
+Use innerHTML when you want to inject HTML elements.
+Use innerText for safe plain text (avoids XSS).</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What are DOM events? Name mouse &amp; key events.</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">DOM Events</span> are actions the browser detects that you can respond to with JS.
+
+<span class="kw">Mouse events:</span>   onclick, ondblclick, onmousedown,
+                onmouseup, onmouseover, onmouseout
+
+<span class="kw">Key events:</span>     onkeydown  — any key pressed
+                onkeypress — character key pressed
+                onkeyup    — key released
+
+<span class="kw">addEventListener</span> is preferred over inline handlers.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What does getElementById return? What if not found?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">getElementById(id)</span> returns a <span class="kw">single Element object</span> matching the given id.
+
+If no element is found → returns <span class="kw">null</span>.
+
+Other selectors:
+<span class="kw">getElementsByClassName</span> → HTMLCollection (live)
+<span class="kw">getElementsByTagName</span>   → HTMLCollection (live)
+<span class="kw">querySelector</span>         → first match (static)
+<span class="kw">querySelectorAll</span>      → NodeList (all matches)</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is isNaN()? What does it return?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">isNaN()</span> — "is Not a Number" — checks if a value <span class="kw">cannot be converted to a number</span>.
+
+<span class="kw">isNaN("hello")  → true</span>   (not a number)
+<span class="kw">isNaN("123")    → false</span>  (can be converted)
+<span class="kw">isNaN(42)       → false</span>
+<span class="kw">isNaN(undefined)→ true</span>
+
+Used for form input validation.</pre>
+    </div>
+  </div>
+
+  <!-- ── Storage & AJAX ── -->
+  <h2 class="sh">Storage &amp; AJAX</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;Difference between localStorage and sessionStorage?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">localStorage</span>
+  • Data persists even after browser/tab is closed.
+  • Scope: same origin (protocol + domain + port).
+  • Use for: user preferences, themes, saved data.
+
+<span class="str">sessionStorage</span>
+  • Data is cleared when the <span class="kw">tab or browser closes</span>.
+  • Scope: same tab only.
+  • Use for: temporary cart, one-session form data.
+
+Both use the same API: setItem, getItem, removeItem, clear.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What are cookies? How are they different from localStorage?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Cookies</span> are small pieces of data stored in the browser and <span class="kw">sent to the server with every HTTP request</span>.
+
+Differences vs localStorage:
+<span class="kw">Server access</span> — cookies: yes. localStorage: no.
+<span class="kw">Expiry</span>        — cookies: set manually. localStorage: permanent.
+<span class="kw">Size limit</span>    — cookies: ~4KB. localStorage: ~5MB.
+<span class="kw">PHP reads</span>     — via $_COOKIE['name'].</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is AJAX? What is it used for?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">AJAX</span> — Asynchronous JavaScript And XML.
+
+It allows web pages to <span class="kw">send and receive data from a server without reloading the page</span>.
+
+How it works:
+1. JS creates an XMLHttpRequest object.
+2. Sends a request to the server (GET/POST).
+3. Server responds (text, JSON, XML).
+4. JS updates part of the DOM with the result.
+
+Used in live search, infinite scroll, form submissions.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What does xhr.status === 200 mean?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">HTTP status codes indicate the result of a request:
+
+<span class="kw">200 OK</span>           — request succeeded, response is ready
+<span class="kw">404 Not Found</span>    — resource doesn't exist
+<span class="kw">500 Server Error</span> — something broke on the server
+<span class="kw">403 Forbidden</span>   — no permission to access
+
+In AJAX: <span class="kw">xhr.status === 200</span> confirms a successful response before using xhr.responseText.</pre>
+    </div>
+  </div>
+
+  <!-- ── Bootstrap ── -->
+  <h2 class="sh">Bootstrap</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is Bootstrap? Why use it?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Bootstrap</span> is a free, open-source front-end CSS framework by Twitter.
+
+It provides:
+<span class="kw">• Grid system</span>    — 12-column responsive layout
+<span class="kw">• Components</span>     — navbars, carousels, modals, cards
+<span class="kw">• Utility classes</span>— spacing, colors, typography
+<span class="kw">• JS plugins</span>     — dropdowns, tooltips, sliders
+
+Why: saves time, ensures cross-browser consistency, mobile-first by default.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;How does Bootstrap's 12-column grid work?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">Bootstrap divides each row into <span class="kw">12 equal columns</span>.
+
+You assign a number to each element (must total ≤ 12):
+<span class="kw">col-4 + col-4 + col-4</span> = 3 equal columns (4+4+4=12)
+<span class="kw">col-3 + col-9</span>         = sidebar + main content
+
+Responsive prefixes (mobile-first):
+<span class="kw">col-</span> = always applies
+<span class="kw">col-sm-</span> = small (576px+)
+<span class="kw">col-md-</span> = medium (768px+)</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is a CDN? Why use it for Bootstrap?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">CDN</span> — Content Delivery Network. A globally distributed network of servers that deliver files quickly to users based on their location.
+
+Using Bootstrap via CDN means:
+<span class="kw">• No installation</span> needed — just add a &lt;link&gt; tag.
+<span class="kw">• Faster load times</span> (file may already be cached in user's browser).
+<span class="kw">• Always up to date</span> with the version you pin.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is a Carousel in Bootstrap?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">A <span class="str">Carousel</span> is a Bootstrap component that shows a <span class="kw">slideshow of images or content</span> that auto-advances or can be manually controlled.
+
+Key attributes:
+<span class="kw">data-bs-ride="carousel"</span>  — auto-play
+<span class="kw">carousel-item active</span>     — sets the starting slide
+<span class="kw">carousel-control-prev/next</span> — navigation buttons
+
+Requires the Bootstrap JS bundle to function.</pre>
+    </div>
+  </div>
+
+  <!-- ── PHP ── -->
+  <h2 class="sh">PHP</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is PHP? How is it different from JavaScript?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">PHP</span> — Hypertext Preprocessor. A <span class="kw">server-side</span> scripting language used to build dynamic web pages and interact with databases.
+
+<span class="kw">PHP</span> runs on the SERVER — output is HTML sent to browser.
+<span class="kw">JavaScript</span> runs in the BROWSER (client-side).
+
+PHP can: connect to MySQL, handle forms, manage sessions, read/write files. JS cannot do these directly.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is the difference between echo and print in PHP?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">echo</span>  — outputs one or more strings. No return value. Slightly faster. Can take multiple comma-separated arguments.
+  <span class="kw">echo "Hello", " World";</span>
+
+<span class="str">print</span> — outputs one string. Always returns <span class="kw">1</span> (so it can be used in expressions). Takes only one argument.
+  <span class="kw">$x = print("Hello");</span> // $x = 1
+
+Both are language constructs, not functions — no parentheses needed.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is a PHP session? How does it work?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">A <span class="str">session</span> stores user data on the <span class="kw">server side</span> between page requests. Unlike cookies, session data is not stored in the browser.
+
+How it works:
+1. <span class="kw">session_start()</span> — creates or resumes a session.
+2. PHP assigns a unique <span class="kw">session ID</span> (stored in a cookie).
+3. Data stored in <span class="kw">$_SESSION['key']</span> on the server.
+4. <span class="kw">session_destroy()</span> ends the session (logout).</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is mysqli? What is a prepared statement?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">mysqli</span> — "MySQL Improved" — PHP extension for connecting to MySQL databases. Supports both procedural and object-oriented style.
+
+<span class="str">Prepared statement</span>: A pre-compiled SQL query where user input is bound as parameters (not injected directly into SQL). Protects against <span class="kw">SQL injection</span>.
+
+<span class="kw">$stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+$stmt->bind_param("i", $id);
+$stmt->execute();</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is define() vs a variable in PHP?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Variable</span>: prefixed with $. Value can be changed any time.
+  <span class="kw">$greeting = "Hello";</span>
+
+<span class="str">define()</span>: creates a <span class="kw">constant</span>. No $ sign. Value cannot be changed after definition.
+  <span class="kw">define('GREETING', 'Hello');</span>
+  <span class="kw">echo GREETING;</span>
+
+Constants are global by default (accessible anywhere in the script).</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is the difference between $_GET, $_POST, $_REQUEST?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">$_GET</span>     — collects data sent in the URL query string (form method="GET").
+<span class="str">$_POST</span>    — collects data sent in the HTTP body (form method="POST"). More secure.
+<span class="str">$_REQUEST</span> — collects data from both GET and POST (and cookies). Convenient but less specific.
+
+Best practice: use <span class="kw">$_POST</span> for sensitive data (passwords), <span class="kw">$_GET</span> for search/filter queries.</pre>
+    </div>
+  </div>
+
+  <!-- ── XML & JSON ── -->
+  <h2 class="sh">XML &amp; JSON</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is XML? What are its rules?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">XML</span> — eXtensible Markup Language. A text-based format for <span class="kw">storing and transporting structured data</span>. Tags are user-defined (unlike HTML).
+
+Rules (well-formed XML):
+<span class="kw">• Must have a single root element</span>
+<span class="kw">• All tags must be closed</span>
+<span class="kw">• Tags are case-sensitive</span>
+<span class="kw">• Attributes must be quoted</span>
+<span class="kw">• Proper nesting required</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is JSON? How does it differ from XML?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">JSON</span> — JavaScript Object Notation. Lightweight data format using key-value pairs.
+
+<span class="kw">JSON:</span>  {"name":"Ana","age":20}
+<span class="kw">XML:</span>   &lt;person&gt;&lt;name&gt;Ana&lt;/name&gt;&lt;/person&gt;
+
+JSON is:  <span class="kw">Smaller, faster to parse</span>, native to JS.
+XML is:   More verbose, supports attributes, better for docs.
+
+<span class="kw">JSON.parse()</span>     — text string → JS object
+<span class="kw">JSON.stringify()</span> — JS object → text string</pre>
+    </div>
+  </div>
+
+  <!-- ── Laravel MVC ── -->
+  <h2 class="sh">Laravel MVC</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is MVC architecture?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">MVC</span> — Model, View, Controller. A software design pattern that separates an application into 3 components:
+
+<span class="kw">Model</span>      — handles data &amp; database logic (Eloquent ORM in Laravel)
+<span class="kw">View</span>       — handles the UI/presentation layer (Blade templates)
+<span class="kw">Controller</span> — handles user input, links Model and View
+
+Benefit: separation of concerns — easier to maintain, test, and scale.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is Laravel? What is Artisan?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Laravel</span> is a PHP MVC web framework with an elegant syntax. It provides routing, Eloquent ORM, Blade templating, migrations, and more out of the box.
+
+<span class="str">Artisan</span> is Laravel's <span class="kw">command-line interface (CLI)</span>. It generates boilerplate code and runs tasks:
+
+<span class="kw">php artisan serve</span>            — start dev server
+<span class="kw">php artisan make:model X -mcr</span> — model+migration+controller
+<span class="kw">php artisan migrate</span>           — run migrations</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is a Migration in Laravel?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)">A <span class="str">migration</span> is a PHP file that defines the <span class="kw">structure of a database table in code</span> — like version control for your database schema.
+
+<span class="kw">up()</span>   — creates/modifies the table (runs on migrate)
+<span class="kw">down()</span> — reverses the change (runs on rollback)
+
+Benefits: team members get the same DB structure by running <span class="kw">php artisan migrate</span> — no manual SQL needed.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is @csrf in a Blade form? Why is it needed?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">@csrf</span> generates a hidden input field containing a <span class="kw">CSRF token</span> (Cross-Site Request Forgery protection).
+
+Without it, Laravel <span class="kw">rejects POST requests</span> with a 419 error.
+
+Why: CSRF attacks trick a user's browser into making unauthorized requests to a site they're logged into. The token proves the request came from your own form.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is Eloquent ORM? What does Student::all() do?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Eloquent</span> is Laravel's built-in <span class="kw">Object Relational Mapper (ORM)</span>. It lets you interact with database tables using PHP objects instead of writing raw SQL.
+
+Each Model = one database table.
+
+<span class="kw">Student::all()</span>         — SELECT * FROM students
+<span class="kw">Student::find($id)</span>     — SELECT * WHERE id = ?
+<span class="kw">Student::where(...)</span>    — custom WHERE clause
+<span class="kw">$s->save()</span>            — INSERT or UPDATE
+<span class="kw">Student::where()->delete()</span> — DELETE</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is Blade templating? Name 3 directives.</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Blade</span> is Laravel's <span class="kw">templating engine</span>. Files use .blade.php extension and allow PHP logic with clean syntax.
+
+<span class="kw">{{ $var }}</span>          — Echo and escape output (XSS safe)
+<span class="kw">{!! $var !!}</span>       — Echo raw unescaped HTML
+<span class="kw">@foreach(...)</span>      — Loop through arrays/collections
+<span class="kw">@if / @else / @endif</span> — Conditionals
+<span class="kw">@csrf</span>              — CSRF token field
+<span class="kw">@extends / @section</span> — Template inheritance</pre>
+    </div>
+  </div>
+
+  <!-- ── Web Hosting ── -->
+  <h2 class="sh">Web Hosting &amp; General</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is web hosting? Types?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Web hosting</span> is a service that provides server space for your website files to be accessible on the internet.
+
+<span class="kw">Shared hosting</span>   — multiple sites on one server (cheap)
+<span class="kw">VPS hosting</span>      — virtual private server, more control
+<span class="kw">Dedicated server</span> — entire server to yourself (expensive)
+<span class="kw">Cloud hosting</span>    — scalable, distributed (AWS, GCP)
+<span class="kw">Static hosting</span>   — HTML/CSS/JS only (GitHub Pages, Netlify)</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is an SSL certificate? What is HTTPS?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">SSL</span> — Secure Sockets Layer (now TLS). A digital certificate that <span class="kw">encrypts data</span> between the browser and server.
+
+<span class="kw">HTTP</span>  — data sent as plain text (insecure)
+<span class="kw">HTTPS</span> — data encrypted via SSL/TLS (secure, padlock icon)
+
+Benefits: protects passwords, prevents eavesdropping, required for payment pages, improves SEO ranking.
+
+Free SSL available via Let's Encrypt.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is the difference between client-side and server-side?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">Client-side</span>: Code runs in the <span class="kw">user's browser</span>.
+  Technologies: HTML, CSS, JavaScript
+  Can: manipulate DOM, validate forms, animate UI.
+  Cannot: access database, read server files.
+
+<span class="str">Server-side</span>: Code runs on the <span class="kw">web server</span>.
+  Technologies: PHP, Node.js, Python
+  Can: query DB, handle auth, process payments.
+  User never sees the source code.</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span style="color:var(--tag)">Q</span>&nbsp;What is SSI (Server Side Includes)?</div></div>
+      <pre style="white-space:pre-wrap;font-family:var(--font-ui);font-size:12.5px;color:var(--text);background:var(--bg0)"><span class="str">SSI</span> — Server Side Includes. A simple server-side scripting language that embeds dynamic content into HTML pages.
+
+In PHP context (from your journal), <span class="kw">SSI refers to including/requiring other PHP files</span>:
+  <span class="kw">include("header.php")</span>  — includes file, warns if missing
+  <span class="kw">require("dbcon.php")</span>   — includes file, dies if missing
+
+Used to reuse database connections, headers, footers across pages.</pre>
+    </div>
+  </div>
+
 
 <!-- ═ No Results ═ -->
 <div class="no-results" id="noResults" style="display:none">
