@@ -1108,7 +1108,7 @@ document.cookie = <span class="str">"username="</span> + user
   <h2 class="sh">Database CRUD (mysqli)</h2>
   <div class="card">
     <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;dbcon.php + CRUD</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cm">// Connect</span>
+    <pre><span class="cm">// Connect syntax: $conn= new mysqli('$servername', "$username', '$password', '$dbname');</span>
 <span class="kw">$conn</span> = <span class="kw">new</span> <span class="fn">mysqli</span>(<span class="str">'localhost'</span>, <span class="str">'root'</span>, <span class="str">'student'</span>, <span class="str">'college_mgt_system'</span>);
 <span class="kw">if</span> (<span class="kw">$conn</span>->connect_error) <span class="fn">die</span>(<span class="str">'Failed: '</span> . <span class="kw">$conn</span>->connect_error);
 
