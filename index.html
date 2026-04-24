@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web App Dev — Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg0:       #0d0f17;
+  --bg1:       #13151f;
+  --bg2:       #1a1d2e;
+  --bg3:       #222539;
+  --border:    #2a2d45;
+  --border2:   #363a5a;
+  --text:      #cdd6f4;
+  --text2:     #8b93b8;
+  --text3:     #565976;
+  --kw:        #89dceb;   /* keyword   — cyan  */
+  --fn:        #89b4fa;   /* function  — blue  */
+  --str:       #a6e3a1;   /* string    — green */
+  --cm:        #585b70;   /* comment   — muted */
+  --tag:       #f38ba8;   /* tag       — pink  */
+  --attr:      #fab387;   /* attribute — amber */
+  --num:       #cba6f7;   /* number    — mauve */
+  --accent:    #89dceb;
+  --accent2:   #89b4fa;
+  --sidebar-w: 220px;
+  --header-h:  52px;
+  --font-ui:   'Outfit', 'Segoe UI', system-ui, sans-serif;
+  --font-code: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg0);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg1); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── Header ────────────────────────────────────────────────── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--header-h);
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px; padding: 0 20px;
+}
+.logo {
+  font-family: var(--font-code);
+  font-weight: 600; font-size: 15px;
+  color: var(--accent);
+  white-space: nowrap;
+  letter-spacing: -0.3px;
+}
+.logo span { color: var(--text3); }
+.search-wrap {
+  flex: 1; max-width: 380px; position: relative;
+}
+.search-wrap input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px 7px 34px;
+  font-family: var(--font-ui); font-size: 13px;
+  color: var(--text); outline: none;
+  transition: border-color .2s;
+}
+.search-wrap input:focus { border-color: var(--accent); }
+.search-wrap input::placeholder { color: var(--text3); }
+.search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--text3); font-size: 14px; pointer-events: none;
+}
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.gh-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 7px; color: var(--text2); font-size: 12px;
+  font-family: var(--font-ui); cursor: pointer; text-decoration: none;
+  transition: all .15s;
+}
+.gh-btn:hover { border-color: var(--accent); color: var(--accent); }
+.theme-toggle {
+  width: 32px; height: 32px; border-radius: 7px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Layout ────────────────────────────────────────────────── */
+.layout {
+  display: flex;
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+aside {
+  width: var(--sidebar-w);
+  background: var(--bg1);
+  border-right: 1px solid var(--border);
+  position: fixed; top: var(--header-h); bottom: 0; left: 0;
+  overflow-y: auto; overflow-x: hidden;
+  padding: 12px 0;
+  transition: transform .25s;
+}
+.sidebar-section { padding: 0 10px; margin-bottom: 4px; }
+.sidebar-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text3);
+  padding: 8px 10px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 7px;
+  cursor: pointer; color: var(--text2); font-size: 13px;
+  transition: all .15s; white-space: nowrap;
+  border: 1px solid transparent;
+}
+.nav-item:hover { background: var(--bg2); color: var(--text); }
+.nav-item.active {
+  background: var(--bg3); color: var(--accent);
+  border-color: var(--border);
+}
+.nav-icon {
+  width: 22px; text-align: center; font-size: 14px; flex-shrink: 0;
+}
+.nav-badge {
+  margin-left: auto; font-size: 10px; font-family: var(--font-code);
+  background: var(--bg3); padding: 1px 6px; border-radius: 4px;
+  color: var(--text3);
+}
+.nav-item.active .nav-badge { color: var(--accent); }
+
+/* ── Main Content ──────────────────────────────────────────── */
+main {
+  margin-left: var(--sidebar-w);
+  flex: 1; padding: 32px 36px;
+  max-width: 1100px;
+}
+
+/* ── Section ───────────────────────────────────────────────── */
+.section { display: none; animation: fadeIn .2s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+.section-hero {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 28px; padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.section-hero h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+.section-hero p { color: var(--text2); font-size: 13.5px; margin-top: 4px; }
+
+/* ── Grid ──────────────────────────────────────────────────── */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+@media(max-width:900px) { .grid2,.grid3 { grid-template-columns:1fr; } }
+
+/* ── Card ──────────────────────────────────────────────────── */
+.card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px; font-weight: 600; color: var(--text2);
+  font-family: var(--font-code); letter-spacing: .02em;
+}
+.card-head-left { display: flex; align-items: center; gap: 8px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot-r { background: #f38ba8; } .dot-y { background: #f9e2af; } .dot-g { background: #a6e3a1; }
+.copy-btn {
+  background: none; border: 1px solid var(--border); border-radius: 5px;
+  color: var(--text3); font-size: 11px; font-family: var(--font-ui);
+  padding: 3px 8px; cursor: pointer; transition: all .15s;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+.copy-btn.copied { color: var(--str); border-color: var(--str); }
+
+/* ── Code Block ────────────────────────────────────────────── */
+pre {
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-family: var(--font-code); font-size: 12.5px; line-height: 1.75;
+  background: var(--bg0);
+  tab-size: 2;
+}
+code { font-family: var(--font-code); }
+.kw  { color: var(--kw); }
+.fn  { color: var(--fn); }
+.str { color: var(--str); }
+.cm  { color: var(--cm); font-style: italic; }
+.tg  { color: var(--tag); }
+.at  { color: var(--attr); }
+.nm  { color: var(--num); }
+.hl  { background: rgba(137,220,235,.07); display: inline-block; width: 100%; border-left: 2px solid var(--accent); padding-left: 4px; margin-left: -6px; }
+
+/* ── Sub-heading ───────────────────────────────────────────── */
+h2.sh {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  margin: 24px 0 10px; display: flex; align-items: center; gap: 8px;
+}
+h2.sh::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+h3.sh { font-size: 12px; font-weight: 600; color: var(--text2); margin: 0 0 6px; }
+
+/* ── Inline Code ───────────────────────────────────────────── */
+.ic {
+  font-family: var(--font-code); font-size: 11.5px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1px 5px; color: var(--kw);
+}
+
+/* ── Tag Chips ─────────────────────────────────────────────── */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.tag-chip {
+  font-size: 11px; font-family: var(--font-code);
+  padding: 3px 9px; border-radius: 20px; border: 1px solid;
+}
+.tc-cyan  { color: var(--kw);  border-color: rgba(137,220,235,.4); background: rgba(137,220,235,.08); }
+.tc-blue  { color: var(--fn);  border-color: rgba(137,180,250,.4); background: rgba(137,180,250,.08); }
+.tc-green { color: var(--str); border-color: rgba(166,227,161,.4); background: rgba(166,227,161,.08); }
+.tc-pink  { color: var(--tag); border-color: rgba(243,139,168,.4); background: rgba(243,139,168,.08); }
+.tc-amber { color: var(--attr);border-color: rgba(250,179,135,.4); background: rgba(250,179,135,.08); }
+.tc-mauve { color: var(--num); border-color: rgba(203,166,247,.4); background: rgba(203,166,247,.08); }
+
+/* ── Table ─────────────────────────────────────────────────── */
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.ref-table th {
+  background: var(--bg3); color: var(--text2); font-weight: 600;
+  padding: 8px 12px; text-align: left; font-size: 11px;
+  letter-spacing: .05em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border2);
+}
+.ref-table td {
+  padding: 8px 12px; border-bottom: 1px solid var(--border);
+  vertical-align: top; font-family: var(--font-code); font-size: 12px;
+}
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: var(--bg2); }
+.ref-table td:first-child { color: var(--kw); }
+
+/* ── Callout ───────────────────────────────────────────────── */
+.callout {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 14px; border-radius: 8px; margin: 12px 0;
+  font-size: 13px;
+}
+.callout.tip  { background: rgba(137,220,235,.07); border: 1px solid rgba(137,220,235,.25); }
+.callout.warn { background: rgba(249,226,175,.07); border: 1px solid rgba(249,226,175,.25); }
+.callout.info { background: rgba(137,180,250,.07); border: 1px solid rgba(137,180,250,.25); }
+
+/* ── Search Highlight ──────────────────────────────────────── */
+mark { background: rgba(249,226,175,.3); color: var(--attr); border-radius: 2px; }
+
+/* ── No Results ────────────────────────────────────────────── */
+.no-results {
+  text-align: center; padding: 60px 20px;
+  color: var(--text3); font-size: 14px;
+}
+.no-results .big { font-size: 40px; margin-bottom: 8px; }
+
+/* ── Mobile Sidebar Toggle ─────────────────────────────────── */
+.menu-btn {
+  display: none; width: 32px; height: 32px; border-radius: 7px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer; font-size: 16px;
+  align-items: center; justify-content: center;
+}
+@media(max-width:700px) {
+  .menu-btn { display: flex; }
+  aside { transform: translateX(-100%); z-index: 90; }
+  aside.open { transform: translateX(0); }
+  main { margin-left: 0; padding: 20px 16px; }
+  .logo-text { display: none; }
+}
+
+/* ── Home Page ─────────────────────────────────────────────── */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px; margin-top: 24px;
+}
+.home-card {
+  background: var(--bg1); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+  cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.home-card:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.home-card .hc-icon { font-size: 28px; }
+.home-card .hc-title { font-weight: 700; font-size: 15px; }
+.home-card .hc-count { font-size: 11px; color: var(--text3); font-family: var(--font-code); }
+.home-card .hc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+
+/* ── Hero Banner ───────────────────────────────────────────── */
+.hero {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 36px 32px;
+  margin-bottom: 28px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(137,220,235,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: 30px; font-weight: 700; letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--fn) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p { color: var(--text2); margin-top: 8px; max-width: 500px; font-size: 14px; }
+.hero-stats { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .val { font-size: 22px; font-weight: 700; font-family: var(--font-code); color: var(--accent); }
+.hero-stat .lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── Progress Bar (for fun) ────────────────────────────────── */
+.pbar { background: var(--bg3); border-radius: 4px; height: 4px; overflow: hidden; margin-top: 4px; }
+.pbar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--fn)); transition: width 1s ease; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header>
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <div class="logo"><span>&lt;</span>WebDev<span>/&gt;</span> <span style="color:var(--text3)">cheatsheet</span></div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Search anything... (Ctrl+K)" autocomplete="off">
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">◑</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="layout">
+
+<!-- ── Sidebar ─────────────────────────────────────────────── -->
+<aside id="sidebar">
+  <div class="sidebar-label">Navigate</div>
+  <div class="sidebar-section">
+    <div class="nav-item active" onclick="show('home')" id="nav-home"><span class="nav-icon">⌂</span>Home<span class="nav-badge">9</span></div>
+  </div>
+  <div class="sidebar-label">Topics</div>
+  <div class="sidebar-section">
+    <div class="nav-item" onclick="show('html')"    id="nav-html">   <span class="nav-icon">🌐</span>HTML<span class="nav-badge">11</span></div>
+    <div class="nav-item" onclick="show('css')"     id="nav-css">    <span class="nav-icon">🎨</span>CSS<span class="nav-badge">2</span></div>
+    <div class="nav-item" onclick="show('js')"      id="nav-js">     <span class="nav-icon">⚡</span>JavaScript<span class="nav-badge">8</span></div>
+    <div class="nav-item" onclick="show('logic')"   id="nav-logic">  <span class="nav-icon">🔢</span>Logic<span class="nav-badge">5</span></div>
+    <div class="nav-item" onclick="show('storage')" id="nav-storage"><span class="nav-icon">💾</span>Storage &amp; AJAX<span class="nav-badge">4</span></div>
+    <div class="nav-item" onclick="show('bootstrap')"id="nav-bootstrap"><span class="nav-icon">🅱</span>Bootstrap<span class="nav-badge">7</span></div>
+    <div class="nav-item" onclick="show('php')"     id="nav-php">    <span class="nav-icon">🐘</span>PHP<span class="nav-badge">8</span></div>
+    <div class="nav-item" onclick="show('xmljson')" id="nav-xmljson"><span class="nav-icon">📄</span>XML &amp; JSON<span class="nav-badge">2</span></div>
+    <div class="nav-item" onclick="show('laravel')" id="nav-laravel"><span class="nav-icon">🔴</span>Laravel MVC<span class="nav-badge">9</span></div>
+  </div>
+  <div class="sidebar-label" style="margin-top:8px">Reference</div>
+  <div class="sidebar-section">
+    <div class="nav-item" onclick="show('quickref')" id="nav-quickref"><span class="nav-icon">📋</span>Quick Ref</div>
+  </div>
+</aside>
+
+<!-- ── Main ────────────────────────────────────────────────── -->
+<main id="main">
+
+<!-- ════ HOME ════ -->
+<div class="section active" id="home">
+  <div class="hero">
+    <h1>Web App Dev Cheatsheet</h1>
+    <p>A complete reference for HTML, CSS, JavaScript, PHP, Bootstrap, XML, JSON, and Laravel MVC. Click any topic to dive in.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">9</div><div class="lbl">Topics</div></div>
+      <div class="hero-stat"><div class="val">65+</div><div class="lbl">Code Snippets</div></div>
+      <div class="hero-stat"><div class="val">100%</div><div class="lbl">Offline Ready</div></div>
+    </div>
+  </div>
+  <div class="home-grid">
+    <div class="home-card" onclick="show('html')">
+      <div class="hc-icon">🌐</div>
+      <div class="hc-title">HTML</div>
+      <div class="hc-count">11 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-pink">forms</span><span class="tag-chip tc-cyan">tables</span><span class="tag-chip tc-blue">links</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('css')">
+      <div class="hc-icon">🎨</div>
+      <div class="hc-title">CSS</div>
+      <div class="hc-count">2 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-green">flexbox</span><span class="tag-chip tc-mauve">selectors</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('js')">
+      <div class="hc-icon">⚡</div>
+      <div class="hc-title">JavaScript</div>
+      <div class="hc-count">8 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-amber">events</span><span class="tag-chip tc-cyan">DOM</span><span class="tag-chip tc-blue">functions</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('logic')">
+      <div class="hc-icon">🔢</div>
+      <div class="hc-title">Logic &amp; Loops</div>
+      <div class="hc-count">5 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-mauve">fibonacci</span><span class="tag-chip tc-cyan">conditions</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('storage')">
+      <div class="hc-icon">💾</div>
+      <div class="hc-title">Storage &amp; AJAX</div>
+      <div class="hc-count">4 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-green">localStorage</span><span class="tag-chip tc-pink">cookies</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('bootstrap')">
+      <div class="hc-icon">🅱</div>
+      <div class="hc-title">Bootstrap 5</div>
+      <div class="hc-count">7 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-blue">grid</span><span class="tag-chip tc-amber">navbar</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('php')">
+      <div class="hc-icon">🐘</div>
+      <div class="hc-title">PHP</div>
+      <div class="hc-count">8 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-mauve">CRUD</span><span class="tag-chip tc-cyan">arrays</span><span class="tag-chip tc-green">sessions</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('xmljson')">
+      <div class="hc-icon">📄</div>
+      <div class="hc-title">XML &amp; JSON</div>
+      <div class="hc-count">2 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-pink">parse</span><span class="tag-chip tc-amber">stringify</span>
+      </div>
+    </div>
+    <div class="home-card" onclick="show('laravel')">
+      <div class="hc-icon">🔴</div>
+      <div class="hc-title">Laravel MVC</div>
+      <div class="hc-count">9 snippets</div>
+      <div class="hc-tags">
+        <span class="tag-chip tc-pink">routes</span><span class="tag-chip tc-blue">blade</span><span class="tag-chip tc-green">CRUD</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ HTML ════ -->
+<div class="section" id="html">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(243,139,168,.12)">🌐</div>
+    <div><h1>HTML</h1><p>HyperText Markup Language — the skeleton of every web page.</p></div>
+  </div>
+
+  <h2 class="sh">Basic Structure</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;index.html</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;!DOCTYPE html&gt;
+&lt;html&gt;</span>
+  <span class="tg">&lt;head&gt;</span>
+    <span class="tg">&lt;meta</span> <span class="at">charset</span>=<span class="str">"UTF-8"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="str">"viewport"</span> <span class="at">content</span>=<span class="str">"width=device-width, initial-scale=1.0"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;title&gt;</span>Page Title<span class="tg">&lt;/title&gt;</span>
+  <span class="tg">&lt;/head&gt;</span>
+  <span class="tg">&lt;body&gt;</span>
+    <span class="tg">&lt;h1&gt;</span>Heading<span class="tg">&lt;/h1&gt;</span>
+    <span class="tg">&lt;p&gt;</span>Paragraph text here.<span class="tg">&lt;/p&gt;</span>
+  <span class="tg">&lt;/body&gt;</span>
+<span class="tg">&lt;/html&gt;</span></pre>
+  </div>
+
+  <h2 class="sh">Images &amp; Links</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;image</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Basic image --&gt;</span>
+<span class="tg">&lt;img</span> <span class="at">src</span>=<span class="str">"../image/photo.jpg"</span>
+     <span class="at">height</span>=<span class="str">"500"</span> <span class="at">width</span>=<span class="str">"600"</span><span class="tg">/&gt;</span>
+
+<span class="cm">&lt;!-- Responsive --&gt;</span>
+<span class="tg">&lt;img</span> <span class="at">src</span>=<span class="str">"photo.jpg"</span>
+     <span class="at">style</span>=<span class="str">"max-width:100%"</span><span class="tg">/&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;links</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Same directory --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="str">"myfile.html"</span><span class="tg">&gt;</span>Link<span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Up one directory --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="str">"../abc.html"</span><span class="tg">&gt;</span>Go up<span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Open in new tab --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="str">"https://google.com"</span>
+   <span class="at">target</span>=<span class="str">"_blank"</span><span class="tg">&gt;</span>External<span class="tg">&lt;/a&gt;</span></pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Tables</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;table with colspan &amp; rowspan</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;table</span> <span class="at">border</span>=<span class="str">"1"</span> <span class="at">width</span>=<span class="str">"40%"</span><span class="tg">&gt;</span>
+  <span class="cm">&lt;!-- colspan: merge columns --&gt;</span>
+  <span class="tg">&lt;tr&gt;&lt;th</span> <span class="at">colspan</span>=<span class="str">"2"</span><span class="tg">&gt;</span>TIME TABLE<span class="tg">&lt;/th&gt;&lt;/tr&gt;</span>
+
+  <span class="cm">&lt;!-- rowspan: merge rows --&gt;</span>
+  <span class="tg">&lt;tr&gt;</span>
+    <span class="tg">&lt;td</span> <span class="at">rowspan</span>=<span class="str">"3"</span><span class="tg">&gt;</span>Monday<span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;td&gt;</span>Batch 1 — Web App Lab<span class="tg">&lt;/td&gt;</span>
+  <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;tr&gt;&lt;td&gt;</span>Batch 2 — COA<span class="tg">&lt;/td&gt;&lt;/tr&gt;</span>
+  <span class="tg">&lt;tr&gt;&lt;td&gt;</span>Batch 3 — Agile<span class="tg">&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="tg">&lt;/table&gt;</span></pre>
+  </div>
+
+  <h2 class="sh">Forms</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;GET form</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;form</span> <span class="at">action</span>=<span class="str">"page.html"</span> <span class="at">method</span>=<span class="str">"GET"</span><span class="tg">&gt;</span>
+  Name: <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"Name"</span>
+              <span class="at">maxlength</span>=<span class="str">"50"</span><span class="tg">&gt;&lt;br&gt;</span>
+  Email:<span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"Email"</span><span class="tg">&gt;&lt;br&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"submit"</span> <span class="at">value</span>=<span class="str">"Sign Up"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"reset"</span>  <span class="at">value</span>=<span class="str">"Reset"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/form&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;POST form</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;form</span> <span class="at">action</span>=<span class="str">"page.php"</span> <span class="at">method</span>=<span class="str">"POST"</span><span class="tg">&gt;</span>
+  <span class="cm">&lt;!-- Checkbox --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"checkbox"</span> <span class="at">name</span>=<span class="str">"bike"</span><span class="tg">&gt;</span> Bike
+
+  <span class="cm">&lt;!-- Radio --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"radio"</span> <span class="at">name</span>=<span class="str">"fruit"</span>
+         <span class="at">value</span>=<span class="str">"apple"</span><span class="tg">&gt;</span> Apple
+
+  <span class="cm">&lt;!-- Password &amp; Hidden --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"password"</span> <span class="at">name</span>=<span class="str">"pwd"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"hidden"</span>   <span class="at">value</span>=<span class="str">"secret"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"submit"</span>   <span class="at">value</span>=<span class="str">"Submit"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/form&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CSS ════ -->
+<div class="section" id="css">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(166,227,161,.12)">🎨</div>
+    <div><h1>CSS</h1><p>Cascading Style Sheets — make things look great.</p></div>
+  </div>
+
+  <h2 class="sh">Selectors &amp; Properties</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;style.css</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cm">/* Element selector */</span>
+<span class="fn">h1</span> { <span class="at">color</span>: <span class="str">#1a2a6c</span>; <span class="at">font-size</span>: <span class="nm">50px</span>; <span class="at">text-transform</span>: <span class="str">uppercase</span>; }
+
+<span class="cm">/* Class selector */</span>
+<span class="fn">.card</span> { <span class="at">background</span>: <span class="str">white</span>; <span class="at">padding</span>: <span class="nm">20px</span>; <span class="at">border-radius</span>: <span class="nm">8px</span>; }
+
+<span class="cm">/* ID selector */</span>
+<span class="fn">#header</span> { <span class="at">text-align</span>: <span class="str">center</span>; }
+
+<span class="cm">/* Pseudo-class */</span>
+<span class="fn">.btn:hover</span> { <span class="at">background-color</span>: <span class="str">#b21f1f</span>; }
+
+<span class="cm">/* Print media query */</span>
+<span class="kw">@media</span> <span class="fn">print</span> { <span class="fn">.no-print</span> { <span class="at">display</span>: <span class="str">none</span>; } }</pre>
+  </div>
+
+  <h2 class="sh">Flexbox Layout</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;certificate / centered layout</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cm">/* Center everything — like the certificate page */</span>
+<span class="fn">body</span> {
+  <span class="at">display</span>: <span class="str">flex</span>;
+  <span class="at">flex-direction</span>: <span class="str">column</span>;
+  <span class="at">justify-content</span>: <span class="str">center</span>;  <span class="cm">/* main axis  */</span>
+  <span class="at">align-items</span>: <span class="str">center</span>;      <span class="cm">/* cross axis */</span>
+  <span class="at">min-height</span>: <span class="nm">100vh</span>;
+}
+
+<span class="cm">/* Certificate container styling */</span>
+<span class="fn">.certificate-container</span> {
+  <span class="at">width</span>: <span class="nm">800px</span>; <span class="at">padding</span>: <span class="nm">50px</span>;
+  <span class="at">background</span>: <span class="str">white</span>;
+  <span class="at">border</span>: <span class="nm">15px</span> <span class="str">solid #1a2a6c</span>;
+  <span class="at">outline</span>: <span class="nm">5px</span> <span class="str">solid #b21f1f</span>;
+  <span class="at">outline-offset</span>: <span class="nm">-25px</span>;
+  <span class="at">box-shadow</span>: <span class="nm">0</span> <span class="nm">10px</span> <span class="nm">30px</span> <span class="fn">rgba</span>(<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0.1</span>);
+}
+<span class="fn">.recipient-name</span> {
+  <span class="at">font-size</span>: <span class="nm">45px</span>; <span class="at">font-weight</span>: <span class="str">bold</span>;
+  <span class="at">color</span>: <span class="str">#b21f1f</span>;
+  <span class="at">border-bottom</span>: <span class="nm">2px</span> <span class="str">solid #333</span>;
+  <span class="at">display</span>: <span class="str">inline-block</span>; <span class="at">padding</span>: <span class="nm">0</span> <span class="nm">50px</span>;
+}</pre>
+  </div>
+</div>
+
+<!-- ════ JS ════ -->
+<div class="section" id="js">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(249,226,175,.12)">⚡</div>
+    <div><h1>JavaScript</h1><p>Internal, External, and Body scripts — events, DOM, functions.</p></div>
+  </div>
+
+  <h2 class="sh">Script Types</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Internal (in &lt;head&gt;)</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">welcome</span>(a) {
+    <span class="fn">alert</span>(<span class="str">"Welcome to my page "</span> + a);
+  }
+<span class="tg">&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- Trigger it --&gt;</span>
+<span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"button"</span> <span class="at">value</span>=<span class="str">"Click"</span>
+       <span class="at">onclick</span>=<span class="str">"welcome('Ana')"</span><span class="tg">&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;External (.js file)</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Load in &lt;head&gt; --&gt;</span>
+<span class="tg">&lt;script</span> <span class="at">src</span>=<span class="str">"myscript.js"</span><span class="tg">&gt;&lt;/script&gt;</span>
+
+<span class="cm">// myscript.js</span>
+<span class="kw">function</span> <span class="fn">welcome</span>() { <span class="fn">alert</span>(<span class="str">'Welcome!'</span>); }
+<span class="kw">function</span> <span class="fn">leave</span>()   { window.<span class="fn">close</span>(); }
+<span class="kw">function</span> <span class="fn">stay</span>()    { history.<span class="fn">back</span>(); }
+
+<span class="cm">&lt;!-- Body --&gt;</span>
+<span class="tg">&lt;input</span> <span class="at">onclick</span>=<span class="str">"welcome()"</span> <span class="at">value</span>=<span class="str">"Go"</span><span class="tg">&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Body script — document.write</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;body&gt;</span>
+  <span class="tg">&lt;script&gt;</span>
+    document.<span class="fn">write</span>(<span class="str">"&lt;h1&gt;Hello World!&lt;/h1&gt;"</span>);
+    document.<span class="fn">write</span>(<span class="str">"&lt;table border='1'&gt;"</span>);
+    document.<span class="fn">write</span>(<span class="str">"&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;"</span>);
+    document.<span class="fn">write</span>(<span class="str">"&lt;/table&gt;"</span>);
+  <span class="tg">&lt;/script&gt;</span>
+<span class="tg">&lt;/body&gt;</span></pre>
+  </div>
+
+  <h2 class="sh">Functions — 3 Types</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;named / anonymous / arrow</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cm">// Named function</span>
+<span class="kw">function</span> <span class="fn">multi</span>(a, b) { <span class="kw">return</span> a * b; }
+document.<span class="fn">getElementById</span>(<span class="str">'r1'</span>).innerHTML = <span class="str">"Result: "</span> + <span class="fn">multi</span>(<span class="nm">2</span>, <span class="nm">5</span>);
+
+<span class="cm">// Anonymous function</span>
+<span class="kw">let</span> add = <span class="kw">function</span>(a, b) { <span class="kw">return</span> a + b; };
+document.<span class="fn">getElementById</span>(<span class="str">'r2'</span>).innerHTML = <span class="fn">add</span>(<span class="nm">2</span>, <span class="nm">3</span>);
+
+<span class="cm">// Arrow function</span>
+<span class="kw">let</span> <span class="fn">sub</span> = (a, b) => a - b;
+document.<span class="fn">getElementById</span>(<span class="str">'r3'</span>).innerHTML = <span class="fn">sub</span>(<span class="nm">4</span>, <span class="nm">3</span>);
+
+<span class="cm">// Attach to buttons</span>
+document.<span class="fn">getElementById</span>(<span class="str">'btn1'</span>).onclick = <span class="fn">multi</span>;
+document.<span class="fn">getElementById</span>(<span class="str">'btn2'</span>).onclick = <span class="kw">function</span>() { <span class="cm">/* ... */</span> };
+document.<span class="fn">getElementById</span>(<span class="str">'btn3'</span>).onclick = () => { <span class="cm">/* ... */</span> };</pre>
+  </div>
+
+  <h2 class="sh">DOM Manipulation</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Get Elements</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// By ID</span>
+document.<span class="fn">getElementById</span>(<span class="str">'id'</span>)
+
+<span class="cm">// By class (returns HTMLCollection)</span>
+<span class="kw">var</span> els = document
+  .<span class="fn">getElementsByClassName</span>(<span class="str">'content'</span>);
+els[<span class="nm">0</span>].style.color = <span class="str">'lime'</span>;
+els[<span class="nm">1</span>].style.color = <span class="str">'red'</span>;
+
+<span class="cm">// By tag</span>
+<span class="kw">var</span> list = document
+  .<span class="fn">getElementsByTagName</span>(<span class="str">'li'</span>);
+<span class="kw">for</span> (<span class="kw">var</span> i=<span class="nm">0</span>; i&lt;list.length; i++) {
+  result += list[i].innerText + <span class="str">'&lt;br&gt;'</span>;
+}</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Modify &amp; Create</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// Change content &amp; style</span>
+el.innerHTML = <span class="str">'&lt;h2&gt;New content&lt;/h2&gt;'</span>;
+el.innerText  = <span class="str">'Plain text'</span>;
+el.style.backgroundColor = <span class="str">'coral'</span>;
+el.classList.<span class="fn">toggle</span>(<span class="str">'dark'</span>);
+
+<span class="cm">// Create &amp; append element</span>
+<span class="kw">let</span> li   = document.<span class="fn">createElement</span>(<span class="str">'li'</span>);
+<span class="kw">let</span> node = document.<span class="fn">createTextNode</span>(<span class="str">'text'</span>);
+li.<span class="fn">appendChild</span>(node);
+document.<span class="fn">getElementById</span>(<span class="str">'list'</span>)
+  .<span class="fn">appendChild</span>(li);</pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Events</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Mouse Events</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>box.onmousedown = <span class="kw">function</span>() {
+  box.style.backgroundColor = <span class="str">'coral'</span>;
+  box.textContent = <span class="str">'Holding...'</span>;
+};
+box.onmouseup = <span class="kw">function</span>() {
+  box.style.backgroundColor = <span class="str">'lightblue'</span>;
+  box.textContent = <span class="str">'Click me!'</span>;
+};
+box.onclick    = <span class="fn">handleSingleClick</span>;
+box.ondblclick = <span class="fn">handleDoubleClick</span>;
+
+<span class="cm">// addEventListener style (preferred)</span>
+box.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, <span class="fn">handleClick</span>);</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Key Events</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">const</span> inp  = document.<span class="fn">getElementById</span>(<span class="str">'myName'</span>);
+<span class="kw">const</span> stat = document.<span class="fn">getElementById</span>(<span class="str">'status'</span>);
+
+inp.onkeydown = <span class="kw">function</span>() {
+  stat.innerHTML = <span class="str">'Key is down'</span>;
+  stat.style.backgroundColor = <span class="str">'lightyellow'</span>;
+};
+inp.onkeyup = <span class="kw">function</span>() {
+  stat.innerHTML = <span class="str">'Key released'</span>;
+  stat.style.backgroundColor = <span class="str">'white'</span>;
+};
+inp.onkeypress = <span class="kw">function</span>() {
+  stat.innerHTML = <span class="str">'Char key pressed'</span>;
+};</pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Login Form</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;login.html</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;script&gt;</span>
+<span class="kw">function</span> <span class="fn">check</span>() {
+  <span class="kw">if</span> (document.form1.user.value == <span class="str">'secret'</span> &amp;&amp;
+      document.form1.pass.value == <span class="str">'magic'</span>) {
+    <span class="fn">alert</span>(<span class="str">'Login success!'</span>);
+  } <span class="kw">else</span> {
+    <span class="fn">alert</span>(<span class="str">'Incorrect password'</span>);
+  }
+}
+<span class="tg">&lt;/script&gt;</span>
+<span class="tg">&lt;form</span> <span class="at">name</span>=<span class="str">"form1"</span><span class="tg">&gt;</span>
+  username: <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span>     <span class="at">name</span>=<span class="str">"user"</span><span class="tg">&gt;&lt;br&gt;</span>
+  password: <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"password"</span> <span class="at">name</span>=<span class="str">"pass"</span><span class="tg">&gt;&lt;br&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"button"</span> <span class="at">value</span>=<span class="str">"LOGIN"</span> <span class="at">onclick</span>=<span class="str">"check()"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/form&gt;</span></pre>
+  </div>
+</div>
+
+<!-- ════ LOGIC ════ -->
+<div class="section" id="logic">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(203,166,247,.12)">🔢</div>
+    <div><h1>Logic &amp; Loops</h1><p>Conditions, comparisons, and loop patterns.</p></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Odd / Even</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">function</span> <span class="fn">check</span>() {
+  <span class="kw">var</span> n = <span class="fn">parseInt</span>(document.form1.num.value);
+  <span class="kw">if</span> (n % <span class="nm">2</span> == <span class="nm">0</span>) <span class="fn">alert</span>(<span class="str">'Even'</span>);
+  <span class="kw">else</span>             <span class="fn">alert</span>(<span class="str">'Odd'</span>);
+}</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;isNaN check</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">function</span> <span class="fn">check</span>() {
+  <span class="kw">var</span> val = document
+    .<span class="fn">getElementById</span>(<span class="str">'num'</span>).value;
+  <span class="kw">if</span> (<span class="fn">isNaN</span>(val))
+    el.innerHTML = <span class="str">'&lt;h2&gt;Not a number&lt;/h2&gt;'</span>;
+  <span class="kw">else</span>
+    el.innerHTML = <span class="str">'&lt;h2&gt;Is a number&lt;/h2&gt;'</span>;
+}</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Greatest of 3</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">var</span> n1 = <span class="fn">parseFloat</span>(form1.num.value);
+<span class="kw">var</span> n2 = <span class="fn">parseFloat</span>(form1.num1.value);
+<span class="kw">var</span> n3 = <span class="fn">parseFloat</span>(form1.num2.value);
+
+<span class="kw">if</span> (n1 &gt; n2 &amp;&amp; n1 &gt; n3)
+  el.innerHTML = <span class="str">'Greatest: '</span> + n1;
+<span class="kw">else if</span> (n2 &gt; n1 &amp;&amp; n2 &gt; n3)
+  el.innerHTML = <span class="str">'Greatest: '</span> + n2;
+<span class="kw">else</span>
+  el.innerHTML = <span class="str">'Greatest: '</span> + n3;</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Multiplication Table</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">var</span> num = <span class="fn">parseInt</span>(form1.num.value);
+<span class="kw">for</span> (<span class="kw">var</span> i = <span class="nm">1</span>; i &lt;= <span class="nm">10</span>; i++) {
+  el.innerHTML += num + <span class="str">' x '</span> + i
+    + <span class="str">' = '</span> + (num * i) + <span class="str">'&lt;br&gt;'</span>;
+}</pre>
+    </div>
+  </div>
+  <h2 class="sh">Fibonacci</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;fibonacci series</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="kw">function</span> <span class="fn">fibb</span>() {
+  <span class="kw">var</span> n = <span class="fn">parseInt</span>(document.form1.n.value);
+  <span class="kw">var</span> f1 = <span class="nm">0</span>, f2 = <span class="nm">1</span>, f3, i = <span class="nm">0</span>;
+  el.innerHTML = f1 + <span class="str">' '</span> + f2 + <span class="str">' '</span>;
+  <span class="kw">while</span> (i &lt; n - <span class="nm">2</span>) {
+    f3 = f1 + f2;
+    el.innerHTML += f3 + <span class="str">' '</span>;
+    f1 = f2; f2 = f3; i++;
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- ════ STORAGE & AJAX ════ -->
+<div class="section" id="storage">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(166,227,161,.12)">💾</div>
+    <div><h1>Storage &amp; AJAX</h1><p>localStorage, sessionStorage, Cookies, and XMLHttpRequest.</p></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;localStorage <span style="color:var(--str);font-size:10px">persistent</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// Save</span>
+localStorage.<span class="fn">setItem</span>(key, message);
+
+<span class="cm">// Read</span>
+<span class="kw">var</span> val = localStorage.<span class="fn">getItem</span>(key);
+
+<span class="cm">// Remove one key</span>
+localStorage.<span class="fn">removeItem</span>(key);
+
+<span class="cm">// Clear everything</span>
+localStorage.<span class="fn">clear</span>();
+
+<span class="cm">// Note: survives browser/tab close</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;sessionStorage <span style="color:var(--attr);font-size:10px">tab only</span></div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// Same API as localStorage</span>
+sessionStorage.<span class="fn">setItem</span>(key, message);
+<span class="kw">var</span> val = sessionStorage.<span class="fn">getItem</span>(key);
+
+<span class="cm">// Cleared when tab is closed</span>
+<span class="cm">// Use for temp session data (like cart)</span></pre>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:0">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Cookies (JS)</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// Set cookie — 3 day expiry</span>
+<span class="kw">var</span> date = <span class="kw">new</span> <span class="fn">Date</span>();
+date.<span class="fn">setTime</span>(date.<span class="fn">getTime</span>() + (<span class="nm">3</span>*<span class="nm">24</span>*<span class="nm">60</span>*<span class="nm">60</span>*<span class="nm">1000</span>));
+document.cookie = <span class="str">"username="</span> + user
+  + <span class="str">"; expires="</span> + date.<span class="fn">toUTCString</span>()
+  + <span class="str">"; path=/"</span>;
+
+<span class="cm">// Read all cookies</span>
+<span class="kw">var</span> all = document.cookie.<span class="fn">split</span>(<span class="str">';'</span>);
+<span class="kw">for</span> (<span class="kw">var</span> i = <span class="nm">0</span>; i &lt; all.length; i++) {
+  display += all[i].<span class="fn">trim</span>() + <span class="str">'&lt;br&gt;'</span>;
+}</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;AJAX — XMLHttpRequest</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">function</span> <span class="fn">loadData</span>() {
+  <span class="kw">var</span> xhr = <span class="kw">new</span> <span class="fn">XMLHttpRequest</span>();
+  xhr.<span class="fn">open</span>(<span class="str">'GET'</span>, <span class="str">'data.txt'</span>, <span class="kw">true</span>);
+  xhr.<span class="fn">send</span>();
+
+  xhr.onload = <span class="kw">function</span>() {
+    <span class="kw">if</span> (xhr.status === <span class="nm">200</span>) {
+      document.<span class="fn">getElementById</span>(<span class="str">'data'</span>)
+        .innerHTML = xhr.responseText;
+    } <span class="kw">else</span> {
+      document.<span class="fn">getElementById</span>(<span class="str">'data'</span>)
+        .innerHTML = <span class="str">'Failed to load'</span>;
+    }
+  };
+  xhr.onerror = <span class="kw">function</span>() {
+    document.<span class="fn">getElementById</span>(<span class="str">'data'</span>)
+      .innerHTML = <span class="str">'Error in request'</span>;
+  };
+}
+<span class="cm">&lt;!-- trigger on keypress --&gt;</span>
+<span class="tg">&lt;input</span> <span class="at">onkeypress</span>=<span class="str">"loadData()"</span><span class="tg">&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <span><strong>Comparison:</strong> localStorage = permanent; sessionStorage = tab-scoped; Cookies = can be sent to server with every request (PHP reads via <span class="ic">$_COOKIE</span>).</span>
+  </div>
+</div>
+
+<!-- ════ BOOTSTRAP ════ -->
+<div class="section" id="bootstrap">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(137,180,250,.12)">🅱</div>
+    <div><h1>Bootstrap 5</h1><p>Responsive grid, components, utilities — mobile-first.</p></div>
+  </div>
+
+  <div class="callout tip"><span>💡</span><span>Add Bootstrap via CDN — no install needed.</span></div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;CDN links</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cm">&lt;!-- CSS in &lt;head&gt; --&gt;</span>
+<span class="tg">&lt;link</span> <span class="at">href</span>=<span class="str">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"</span> <span class="at">rel</span>=<span class="str">"stylesheet"</span><span class="tg">&gt;</span>
+
+<span class="cm">&lt;!-- JS before &lt;/body&gt; --&gt;</span>
+<span class="tg">&lt;script</span> <span class="at">src</span>=<span class="str">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"</span><span class="tg">&gt;&lt;/script&gt;</span></pre>
+  </div>
+
+  <h2 class="sh">Grid System</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Basic Grid</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"container"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"row"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"col"</span><span class="tg">&gt;</span>Equal<span class="tg">&lt;/div&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"col-3 bg-danger"</span><span class="tg">&gt;</span>3<span class="tg">&lt;/div&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"col-5 bg-success"</span><span class="tg">&gt;</span>5<span class="tg">&lt;/div&gt;</span>
+  <span class="tg">&lt;/div&gt;</span>
+<span class="tg">&lt;/div&gt;</span>
+<span class="cm">&lt;!-- Total = 12 columns --&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Responsive</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">&lt;!-- xs→full, sm→half, lg→quarter --&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"col-12 col-sm-6 col-lg-3"</span><span class="tg">&gt;</span>
+  Box
+<span class="tg">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- Hide on small, show md+ --&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"d-none d-md-block"</span><span class="tg">&gt;</span>
+  Desktop only
+<span class="tg">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Breakpoints</h2>
+  <div class="card"><pre><table class="ref-table" style="background:transparent">
+<thead><tr><th>Prefix</th><th>Min Width</th><th>Device</th></tr></thead>
+<tbody>
+<tr><td>col-</td><td>&lt;576px</td><td>Extra small (mobile)</td></tr>
+<tr><td>col-sm-</td><td>576px</td><td>Small</td></tr>
+<tr><td>col-md-</td><td>768px</td><td>Medium (tablet)</td></tr>
+<tr><td>col-lg-</td><td>992px</td><td>Large (laptop)</td></tr>
+<tr><td>col-xl-</td><td>1200px</td><td>Extra large</td></tr>
+</tbody></table></pre></div>
+
+  <h2 class="sh">Navbar &amp; Carousel</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;navbar + carousel</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;nav</span> <span class="at">class</span>=<span class="str">"navbar navbar-dark bg-dark"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"container"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;a</span> <span class="at">class</span>=<span class="str">"navbar-brand"</span> <span class="at">href</span>=<span class="str">"#"</span><span class="tg">&gt;</span>Portfolio<span class="tg">&lt;/a&gt;</span>
+    <span class="tg">&lt;ul</span> <span class="at">class</span>=<span class="str">"navbar-nav ms-auto"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;li</span> <span class="at">class</span>=<span class="str">"nav-item"</span><span class="tg">&gt;&lt;a</span> <span class="at">class</span>=<span class="str">"nav-link"</span> <span class="at">href</span>=<span class="str">"#"</span><span class="tg">&gt;</span>Home<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="tg">&lt;/ul&gt;</span>
+  <span class="tg">&lt;/div&gt;</span>
+<span class="tg">&lt;/nav&gt;</span>
+
+<span class="tg">&lt;div</span> <span class="at">id</span>=<span class="str">"hero"</span> <span class="at">class</span>=<span class="str">"carousel slide"</span> <span class="at">data-bs-ride</span>=<span class="str">"carousel"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"carousel-inner"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"carousel-item active"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="str">"slide1.jpg"</span> <span class="at">class</span>=<span class="str">"d-block w-100"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+  <span class="tg">&lt;/div&gt;</span>
+  <span class="tg">&lt;button</span> <span class="at">class</span>=<span class="str">"carousel-control-prev"</span> <span class="at">data-bs-target</span>=<span class="str">"#hero"</span> <span class="at">data-bs-slide</span>=<span class="str">"prev"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="str">"carousel-control-prev-icon"</span><span class="tg">&gt;&lt;/span&gt;</span>
+  <span class="tg">&lt;/button&gt;</span>
+<span class="tg">&lt;/div&gt;</span></pre>
+  </div>
+
+  <h2 class="sh">Typography &amp; Colors</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;utilities</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;h1</span> <span class="at">class</span>=<span class="str">"display-1"</span><span class="tg">&gt;</span>Big Heading<span class="tg">&lt;/h1&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">class</span>=<span class="str">"lead"</span><span class="tg">&gt;</span>Featured paragraph text.<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">class</span>=<span class="str">"text-primary fw-bold"</span><span class="tg">&gt;</span>Blue Bold<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">class</span>=<span class="str">"text-center fst-italic"</span><span class="tg">&gt;</span>Centered Italic<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">class</span>=<span class="str">"text-uppercase"</span><span class="tg">&gt;</span>uppercase text<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"bg-success text-white p-3"</span><span class="tg">&gt;</span>Green<span class="tg">&lt;/div&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"bg-warning text-dark p-3"</span><span class="tg">&gt;</span>Yellow<span class="tg">&lt;/div&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="str">"bg-dark text-white p-3"</span><span class="tg">&gt;</span>Dark<span class="tg">&lt;/div&gt;</span></pre>
+  </div>
+</div>
+
+<!-- ════ PHP ════ -->
+<div class="section" id="php">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(137,180,250,.15)">🐘</div>
+    <div><h1>PHP</h1><p>Server-side scripting — variables, DB CRUD, sessions.</p></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Variables &amp; Output</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;?php</span>
+<span class="kw">$one</span>   = <span class="nm">1</span>;             <span class="cm">// integer</span>
+<span class="kw">$text</span>  = <span class="str">'string'</span>;
+<span class="kw">$numb</span>  = <span class="nm">343.01</span>;        <span class="cm">// float</span>
+<span class="fn">define</span>(<span class="str">'GREETING'</span>, <span class="str">'hello'</span>); <span class="cm">// constant</span>
+
+<span class="kw">echo</span> <span class="str">"Year: "</span> . <span class="kw">$year</span>;
+<span class="kw">print</span>(<span class="str">"&lt;h1&gt;PHP Output&lt;/h1&gt;"</span>);
+<span class="tg">?&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Decision &amp; Switch</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// if-else</span>
+<span class="kw">if</span> (<span class="kw">$x</span> &gt; <span class="nm">0</span>) <span class="kw">echo</span> <span class="str">'Positive'</span>;
+<span class="kw">else</span>        <span class="kw">echo</span> <span class="str">'Negative'</span>;
+
+<span class="cm">// switch</span>
+<span class="kw">switch</span> (<span class="kw">$favcolor</span>) {
+  <span class="kw">case</span> <span class="str">'red'</span>:  <span class="kw">echo</span> <span class="str">'Red!'</span>;  <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">'blue'</span>: <span class="kw">echo</span> <span class="str">'Blue!'</span>; <span class="kw">break</span>;
+  <span class="kw">default</span>:    <span class="kw">echo</span> <span class="str">'Other'</span>;
+}</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Loops</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// for — multiplication table</span>
+<span class="kw">for</span> (<span class="kw">$i</span>=<span class="nm">1</span>; <span class="kw">$i</span>&lt;=<span class="nm">10</span>; <span class="kw">$i</span>++) {
+  <span class="kw">echo</span> <span class="str">"2 x"</span>.<span class="kw">$i</span>.<span class="str">"="</span>.(<span class="nm">2</span>*<span class="kw">$i</span>);
+}
+<span class="cm">// do-while</span>
+<span class="kw">$x</span> = <span class="nm">9</span>;
+<span class="kw">do</span> { <span class="kw">echo</span> <span class="str">"$x "</span>; <span class="kw">$x</span>--; }
+<span class="kw">while</span> (<span class="kw">$x</span> &gt;= <span class="nm">0</span>);</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Associative Array</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">$colors</span> = <span class="fn">array</span>(
+  <span class="str">'apple'</span> => <span class="str">'red'</span>,
+  <span class="str">'plant'</span> => <span class="str">'green'</span>,
+  <span class="str">'sky'</span>   => <span class="str">'blue'</span>
+);
+<span class="kw">foreach</span> (<span class="kw">$colors</span> <span class="kw">as</span> <span class="kw">$k</span> => <span class="kw">$v</span>) {
+  <span class="kw">echo</span> <span class="kw">$k</span>.<span class="str">"==>"</span>.<span class="kw">$v</span>.<span class="str">"&lt;br&gt;"</span>;
+}
+<span class="fn">print_r</span>(<span class="kw">$colors</span>); <span class="cm">// debug</span></pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Database CRUD (mysqli)</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;dbcon.php + CRUD</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cm">// Connect</span>
+<span class="kw">$conn</span> = <span class="kw">new</span> <span class="fn">mysqli</span>(<span class="str">'localhost'</span>, <span class="str">'root'</span>, <span class="str">'student'</span>, <span class="str">'college_mgt_system'</span>);
+<span class="kw">if</span> (<span class="kw">$conn</span>->connect_error) <span class="fn">die</span>(<span class="str">'Failed: '</span> . <span class="kw">$conn</span>->connect_error);
+
+<span class="cm">// INSERT</span>
+<span class="kw">$sql</span> = <span class="str">"INSERT INTO user(username, password) VALUES('$user','$pass')"</span>;
+<span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);
+
+<span class="cm">// SELECT + display</span>
+<span class="kw">$result</span> = <span class="kw">$conn</span>-><span class="fn">query</span>(<span class="str">"SELECT * FROM student"</span>);
+<span class="kw">while</span> (<span class="kw">$row</span> = <span class="kw">$result</span>-><span class="fn">fetch_assoc</span>()) {
+  <span class="kw">echo</span> <span class="kw">$row</span>[<span class="str">'Name'</span>] . <span class="str">'&lt;br&gt;'</span>;
+}
+
+<span class="cm">// UPDATE</span>
+<span class="kw">$sql</span> = <span class="str">"UPDATE student SET Class='$class', Address='$addr' WHERE Rollno=$rollno"</span>;
+<span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);
+
+<span class="cm">// DELETE</span>
+<span class="kw">$sql</span> = <span class="str">"DELETE FROM student WHERE Rollno=$rollno"</span>;
+<span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);</pre>
+  </div>
+
+  <h2 class="sh">Sessions &amp; GET/POST</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Session login</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;?php</span>
+<span class="fn">session_start</span>();
+<span class="kw">$user</span> = <span class="kw">$_POST</span>[<span class="str">'user'</span>];
+<span class="kw">$pass</span> = <span class="kw">$_POST</span>[<span class="str">'pass'</span>];
+<span class="kw">$sql</span>  = <span class="str">"SELECT * FROM user WHERE
+  username='$user' AND password='$pass'"</span>;
+<span class="kw">$res</span> = <span class="kw">$conn</span>-><span class="fn">query</span>(<span class="kw">$sql</span>);
+<span class="kw">if</span> (<span class="kw">$res</span>->num_rows == <span class="nm">1</span>)
+  <span class="fn">include</span>(<span class="str">'profile.php'</span>);
+<span class="kw">else</span>
+  <span class="kw">echo</span> <span class="str">'Invalid user'</span>;
+<span class="tg">?&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;GET &amp; POST retrieval</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">// GET</span>
+<span class="kw">$subject</span> = <span class="kw">$_GET</span>[<span class="str">'subj'</span>];
+<span class="kw">$message</span> = <span class="kw">$_GET</span>[<span class="str">'msg'</span>];
+
+<span class="cm">// POST</span>
+<span class="kw">$username</span> = <span class="kw">$_POST</span>[<span class="str">'user'</span>];
+<span class="kw">$password</span> = <span class="kw">$_POST</span>[<span class="str">'pass'</span>];
+
+<span class="cm">// Both ($_ REQUEST)</span>
+<span class="kw">$val</span> = <span class="kw">$_REQUEST</span>[<span class="str">'key'</span>];</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ════ XML & JSON ════ -->
+<div class="section" id="xmljson">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(249,226,175,.12)">📄</div>
+    <div><h1>XML &amp; JSON</h1><p>Structured data formats — XML for markup, JSON for JS objects.</p></div>
+  </div>
+
+  <h2 class="sh">XML Structure</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;bookstore.xml</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="tg">&lt;?xml</span> <span class="at">version</span>=<span class="str">"1.0"</span> <span class="at">encoding</span>=<span class="str">"UTF-8"</span><span class="tg">?&gt;</span>
+<span class="tg">&lt;bookstore&gt;</span>
+  <span class="tg">&lt;book</span> <span class="at">category</span>=<span class="str">"cooking"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;title</span> <span class="at">lang</span>=<span class="str">"en"</span><span class="tg">&gt;</span>Everyday Italian<span class="tg">&lt;/title&gt;</span>
+    <span class="tg">&lt;author&gt;</span>Giada De Laurentiis<span class="tg">&lt;/author&gt;</span>
+    <span class="tg">&lt;year&gt;</span>2005<span class="tg">&lt;/year&gt;</span>
+    <span class="tg">&lt;price&gt;</span>30.00<span class="tg">&lt;/price&gt;</span>
+  <span class="tg">&lt;/book&gt;</span>
+  <span class="tg">&lt;book</span> <span class="at">category</span>=<span class="str">"children"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;title</span> <span class="at">lang</span>=<span class="str">"en"</span><span class="tg">&gt;</span>Harry Potter<span class="tg">&lt;/title&gt;</span>
+    <span class="tg">&lt;author&gt;</span>J K. Rowling<span class="tg">&lt;/author&gt;</span>
+    <span class="tg">&lt;year&gt;</span>2005<span class="tg">&lt;/year&gt;&lt;price&gt;</span>29.99<span class="tg">&lt;/price&gt;</span>
+  <span class="tg">&lt;/book&gt;</span>
+<span class="tg">&lt;/bookstore&gt;</span></pre>
+  </div>
+
+  <h2 class="sh">JSON — Parse &amp; Stringify</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;JSON.parse — text to object</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">const</span> txt = <span class="str">'{"name":"samantha","age":20,"city":"dubai"}'</span>;
+<span class="kw">const</span> obj = JSON.<span class="fn">parse</span>(txt);
+<span class="cm">// obj.name → "samantha"</span>
+<span class="cm">// obj.age  → 20</span>
+document.<span class="fn">getElementById</span>(<span class="str">'demo'</span>).innerHTML
+  = obj.name + <span class="str">', '</span> + obj.age;</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;JSON.stringify — object to text</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">const</span> obj = {
+  name: <span class="str">'samantha'</span>,
+  age:  <span class="nm">20</span>,
+  city: <span class="str">'dubai'</span>
+};
+<span class="kw">const</span> myJSON = JSON.<span class="fn">stringify</span>(obj);
+<span class="cm">// '{"name":"samantha","age":20,"city":"dubai"}'</span>
+document.<span class="fn">getElementById</span>(<span class="str">'demo'</span>).innerHTML = myJSON;</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LARAVEL ════ -->
+<div class="section" id="laravel">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(243,139,168,.12)">🔴</div>
+    <div><h1>Laravel MVC</h1><p>Model-View-Controller framework — setup, routes, controllers, Blade.</p></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;Setup commands</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># Install</span>
+composer create-project laravel/laravel myapp
+
+<span class="cm"># Serve</span>
+cd myapp && php artisan serve
+<span class="cm"># → http://localhost:8000</span>
+
+<span class="cm"># Generate app key</span>
+php artisan key:generate
+
+<span class="cm"># Model + Migration + Controller</span>
+php artisan make:model Student -mcr
+
+<span class="cm"># Run migrations</span>
+php artisan migrate
+
+<span class="cm"># List all routes</span>
+php artisan route:list</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;.env — Database</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=mydb
+DB_USERNAME=root
+DB_PASSWORD=secret</pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Migration</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;database/migrations/xxxx_create_students_table.php</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="kw">public function</span> <span class="fn">up</span>(): <span class="kw">void</span> {
+  Schema::<span class="fn">create</span>(<span class="str">'students'</span>, <span class="kw">function</span> (Blueprint <span class="kw">$table</span>) {
+    <span class="kw">$table</span>-><span class="fn">id</span>();
+    <span class="kw">$table</span>-><span class="fn">string</span>(<span class="str">'name'</span>);
+    <span class="kw">$table</span>-><span class="fn">string</span>(<span class="str">'email'</span>);
+    <span class="kw">$table</span>-><span class="fn">string</span>(<span class="str">'phone'</span>);
+    <span class="kw">$table</span>-><span class="fn">timestamps</span>();
+  });
+}
+<span class="kw">public function</span> <span class="fn">down</span>(): <span class="kw">void</span> {
+  Schema::<span class="fn">dropIfExists</span>(<span class="str">'students'</span>);
+}</pre>
+  </div>
+
+  <h2 class="sh">Routes &amp; Model</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;routes/web.php</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">use</span> App\Http\Controllers\StudentController;
+
+Route::<span class="fn">view</span>(<span class="str">'addStudent'</span>, <span class="str">'add-student'</span>);
+Route::<span class="fn">post</span>(<span class="str">'add'</span>,         [StudentController::<span class="kw">class</span>, <span class="str">'add'</span>]);
+Route::<span class="fn">get</span>(<span class="str">'listStudent'</span>, [StudentController::<span class="kw">class</span>, <span class="str">'list'</span>]);
+Route::<span class="fn">get</span>(<span class="str">'delete/{id}'</span>, [StudentController::<span class="kw">class</span>, <span class="str">'deleteStudent'</span>]);
+Route::<span class="fn">get</span>(<span class="str">'update/{id}'</span>, [StudentController::<span class="kw">class</span>, <span class="str">'updateStudent'</span>]);
+Route::<span class="fn">post</span>(<span class="str">'updateform/{id}'</span>, [StudentController::<span class="kw">class</span>, <span class="str">'updateform'</span>]);</pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;app/Models/Student.php</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">class</span> Student <span class="kw">extends</span> Model {
+  <span class="kw">protected</span> <span class="kw">$fillable</span> = [
+    <span class="str">'name'</span>, <span class="str">'email'</span>, <span class="str">'phone'</span>
+  ];
+}</pre>
+    </div>
+  </div>
+
+  <h2 class="sh">Controller — Full CRUD</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;StudentController.php</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="kw">class</span> StudentController <span class="kw">extends</span> Controller {
+
+  <span class="cm">// ADD</span>
+  <span class="kw">function</span> <span class="fn">add</span>(Request <span class="kw">$request</span>) {
+    <span class="kw">$s</span> = <span class="kw">new</span> Student();
+    <span class="kw">$s</span>->name  = <span class="kw">$request</span>->name;
+    <span class="kw">$s</span>->email = <span class="kw">$request</span>->email;
+    <span class="kw">$s</span>->phone = <span class="kw">$request</span>->phone;
+    <span class="kw">$s</span>-><span class="fn">save</span>();
+  }
+
+  <span class="cm">// LIST</span>
+  <span class="kw">function</span> <span class="fn">list</span>() {
+    <span class="kw">$data</span> = Student::<span class="fn">all</span>();
+    <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'list-student'</span>, [<span class="str">'student123'</span> => <span class="kw">$data</span>]);
+  }
+
+  <span class="cm">// DELETE</span>
+  <span class="kw">function</span> <span class="fn">deleteStudent</span>(<span class="kw">$id</span>) {
+    Student::<span class="fn">where</span>(<span class="str">'id'</span>, <span class="kw">$id</span>)-><span class="fn">delete</span>();
+    <span class="kw">return</span> <span class="fn">redirect</span>(<span class="str">'listStudent'</span>);
+  }
+
+  <span class="cm">// UPDATE — load form</span>
+  <span class="kw">function</span> <span class="fn">updateStudent</span>(<span class="kw">$id</span>) {
+    <span class="kw">$s</span> = Student::<span class="fn">find</span>(<span class="kw">$id</span>);
+    <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'updateform'</span>, [<span class="str">'studentdata'</span> => <span class="kw">$s</span>]);
+  }
+
+  <span class="cm">// UPDATE — save</span>
+  <span class="kw">function</span> <span class="fn">updateform</span>(<span class="kw">$id</span>, Request <span class="kw">$req</span>) {
+    <span class="kw">$s</span> = Student::<span class="fn">find</span>(<span class="kw">$id</span>);
+    <span class="kw">$s</span>->name = <span class="kw">$req</span>->name;
+    <span class="kw">$s</span>-><span class="fn">save</span>();
+    <span class="kw">return</span> <span class="fn">redirect</span>(<span class="str">'listStudent'</span>);
+  }
+}</pre>
+  </div>
+
+  <h2 class="sh">Blade Views</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;list-student.blade.php</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;table</span> <span class="at">border</span>=<span class="str">"1"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;tr&gt;&lt;th&gt;</span>Name<span class="tg">&lt;/th&gt;&lt;th&gt;</span>Email<span class="tg">&lt;/th&gt;&lt;th&gt;</span>Actions<span class="tg">&lt;/th&gt;&lt;/tr&gt;</span>
+  <span class="kw">@foreach</span>(<span class="kw">$student123</span> <span class="kw">as</span> <span class="kw">$stu</span>)
+  <span class="tg">&lt;tr&gt;</span>
+    <span class="tg">&lt;td&gt;</span>{{ <span class="kw">$stu</span>->name }}<span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;td&gt;</span>{{ <span class="kw">$stu</span>->email }}<span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;td&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="str">"deleted/{{ $stu-&gt;id }}"</span><span class="tg">&gt;</span>Delete<span class="tg">&lt;/a&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="str">"update/{{ $stu-&gt;id }}"</span><span class="tg">&gt;</span>Update<span class="tg">&lt;/a&gt;</span>
+    <span class="tg">&lt;/td&gt;</span>
+  <span class="tg">&lt;/tr&gt;</span>
+  <span class="kw">@endforeach</span>
+<span class="tg">&lt;/table&gt;</span></pre>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-head-left"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp;add-student.blade.php</div><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="tg">&lt;form</span> <span class="at">action</span>=<span class="str">"/add"</span> <span class="at">method</span>=<span class="str">"POST"</span><span class="tg">&gt;</span>
+  <span class="kw">@csrf</span>  <span class="cm">&lt;!-- security token --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"name"</span>
+         <span class="at">placeholder</span>=<span class="str">"Enter name"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"email"</span>
+         <span class="at">placeholder</span>=<span class="str">"Enter email"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"text"</span> <span class="at">name</span>=<span class="str">"phone"</span>
+         <span class="at">placeholder</span>=<span class="str">"Enter phone"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="str">"submit"</span> <span class="at">value</span>=<span class="str">"Add Student"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;/form&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ════ QUICK REF ════ -->
+<div class="section" id="quickref">
+  <div class="section-hero">
+    <div class="section-icon" style="background:rgba(137,220,235,.12)">📋</div>
+    <div><h1>Quick Reference</h1><p>Handy comparison tables for fast lookup.</p></div>
+  </div>
+
+  <h2 class="sh">Storage Comparison</h2>
+  <div class="card">
+    <pre><table class="ref-table" style="background:transparent">
+<thead><tr><th>Type</th><th>Lifespan</th><th>Scope</th><th>Server Access</th></tr></thead>
+<tbody>
+<tr><td>localStorage</td><td>Permanent</td><td>Same origin</td><td>No</td></tr>
+<tr><td>sessionStorage</td><td>Tab closes</td><td>Same tab</td><td>No</td></tr>
+<tr><td>Cookies</td><td>Set by expiry</td><td>Domain-wide</td><td>Yes ($_COOKIE)</td></tr>
+</tbody></table></pre>
+  </div>
+
+  <h2 class="sh">Laravel Artisan Commands</h2>
+  <div class="card">
+    <pre><table class="ref-table" style="background:transparent">
+<thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>php artisan serve</td><td>Start dev server</td></tr>
+<tr><td>php artisan make:model Name -mcr</td><td>Model + Migration + Controller (resource)</td></tr>
+<tr><td>php artisan make:migration create_tb</td><td>Migration only</td></tr>
+<tr><td>php artisan migrate</td><td>Run all pending migrations</td></tr>
+<tr><td>php artisan migrate:rollback</td><td>Undo last migration batch</td></tr>
+<tr><td>php artisan key:generate</td><td>Generate app encryption key</td></tr>
+<tr><td>php artisan route:list</td><td>Show all registered routes</td></tr>
+</tbody></table></pre>
+  </div>
+
+  <h2 class="sh">Bootstrap Grid Classes</h2>
+  <div class="card">
+    <pre><table class="ref-table" style="background:transparent">
+<thead><tr><th>Class</th><th>Breakpoint</th><th>Device</th></tr></thead>
+<tbody>
+<tr><td>col-</td><td>&lt;576px</td><td>Extra small / mobile</td></tr>
+<tr><td>col-sm-{n}</td><td>576px+</td><td>Small</td></tr>
+<tr><td>col-md-{n}</td><td>768px+</td><td>Medium / tablet</td></tr>
+<tr><td>col-lg-{n}</td><td>992px+</td><td>Large / laptop</td></tr>
+<tr><td>col-xl-{n}</td><td>1200px+</td><td>Extra large</td></tr>
+<tr><td>d-none</td><td>All</td><td>Hide element</td></tr>
+<tr><td>d-md-block</td><td>768px+</td><td>Show from medium up</td></tr>
+</tbody></table></pre>
+  </div>
+
+  <h2 class="sh">PHP Variable Types</h2>
+  <div class="card">
+    <pre><table class="ref-table" style="background:transparent">
+<thead><tr><th>Type</th><th>Example</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>Integer</td><td>$x = 1;</td><td>Whole numbers</td></tr>
+<tr><td>Float</td><td>$x = 3.14;</td><td>Decimal numbers</td></tr>
+<tr><td>String</td><td>$x = 'hello';</td><td>Text in quotes</td></tr>
+<tr><td>Boolean</td><td>$x = true;</td><td>true / false</td></tr>
+<tr><td>Array</td><td>$x = array('a','b');</td><td>Multiple values</td></tr>
+<tr><td>Constant</td><td>define('G','hi');</td><td>No $ sign</td></tr>
+</tbody></table></pre>
+  </div>
+</div>
+
+<!-- ═ No Results ═ -->
+<div class="no-results" id="noResults" style="display:none">
+  <div class="big">🔍</div>
+  <div>No results found for your search.</div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ── Navigation ───────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add('active');
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  document.getElementById('noResults').style.display = 'none';
+  // close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo(0, 0);
+}
+
+// ── Sidebar toggle (mobile) ──────────────────────────────────
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ── Copy to clipboard ────────────────────────────────────────
+function copyCode(btn) {
+  const pre = btn.closest('.card').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// ── Search ───────────────────────────────────────────────────
+const sections = ['html','css','js','logic','storage','bootstrap','php','xmljson','laravel','quickref'];
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) {
+    show('home'); return;
+  }
+
+  // hide all nav active
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('noResults').style.display = 'none';
+
+  let found = false;
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const text = sec.innerText.toLowerCase();
+    if (text.includes(q)) {
+      sec.classList.add('active');
+      found = true;
+    }
+  });
+
+  if (!found) {
+    document.getElementById('noResults').style.display = 'block';
+  }
+});
+
+// Ctrl+K focuses search
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if (e.key === 'Escape') {
+    searchInput.value = '';
+    show('home');
+  }
+});
+
+// ── Light/Dark toggle ────────────────────────────────────────
+let lightMode = false;
+function toggleTheme() {
+  lightMode = !lightMode;
+  if (lightMode) {
+    document.documentElement.style.setProperty('--bg0','#f8f9fc');
+    document.documentElement.style.setProperty('--bg1','#ffffff');
+    document.documentElement.style.setProperty('--bg2','#f0f2f7');
+    document.documentElement.style.setProperty('--bg3','#e4e7ef');
+    document.documentElement.style.setProperty('--border','#d8dce8');
+    document.documentElement.style.setProperty('--border2','#c5cad8');
+    document.documentElement.style.setProperty('--text','#2a2d3e');
+    document.documentElement.style.setProperty('--text2','#555a7a');
+    document.documentElement.style.setProperty('--text3','#8b93b8');
+    document.documentElement.style.setProperty('--cm','#999bb5');
+    document.documentElement.style.setProperty('--codebg','#1E1E2E');
+    document.querySelector('.theme-toggle').textContent = '☀';
+  } else {
+    document.documentElement.style.setProperty('--bg0','#0d0f17');
+    document.documentElement.style.setProperty('--bg1','#13151f');
+    document.documentElement.style.setProperty('--bg2','#1a1d2e');
+    document.documentElement.style.setProperty('--bg3','#222539');
+    document.documentElement.style.setProperty('--border','#2a2d45');
+    document.documentElement.style.setProperty('--border2','#363a5a');
+    document.documentElement.style.setProperty('--text','#cdd6f4');
+    document.documentElement.style.setProperty('--text2','#8b93b8');
+    document.documentElement.style.setProperty('--text3','#565976');
+    document.documentElement.style.setProperty('--cm','#585b70');
+    document.querySelector('.theme-toggle').textContent = '◑';
+  }
+}
+</script>
+</body>
+</html>
